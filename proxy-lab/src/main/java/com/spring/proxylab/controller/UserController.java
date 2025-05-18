@@ -1,6 +1,8 @@
-package com.spring.proxylab.springaop;
+package com.spring.proxylab.controller;
 
+import com.spring.proxylab.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,5 +19,15 @@ public class UserController {
     public String checkProxy() {
         System.out.println(" Injected bean class: " + userService.getClass());
         return "Check the console!";
+    }
+
+    @PostMapping("/test-transaction")
+    public String testTransaction() {
+        try {
+            userService.createUsersWithRollback();
+        } catch (Exception e) {
+            return " Exception caught: " + e.getMessage();
+        }
+        return " Done";
     }
 }
