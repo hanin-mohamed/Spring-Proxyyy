@@ -1,5 +1,6 @@
 package com.spring.proxylab.controller;
 
+import com.spring.proxylab.service.AsyncService;
 import com.spring.proxylab.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,8 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
+
     @GetMapping("/check-proxy")
     public String checkProxy() {
         System.out.println(" Injected bean class: " + userService.getClass());
@@ -30,4 +33,10 @@ public class UserController {
         }
         return " Done";
     }
+    @GetMapping("/async-create-user")
+    public String asyncCreateUser() {
+        userService.createUserAsync();
+        return "Started async user creation";
+    }
+
 }
