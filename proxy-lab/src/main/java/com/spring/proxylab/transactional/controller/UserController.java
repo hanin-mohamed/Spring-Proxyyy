@@ -1,7 +1,6 @@
-package com.spring.proxylab.controller;
+package com.spring.proxylab.transactional.controller;
 
-import com.spring.proxylab.service.AsyncService;
-import com.spring.proxylab.service.UserService;
+import com.spring.proxylab.transactional.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

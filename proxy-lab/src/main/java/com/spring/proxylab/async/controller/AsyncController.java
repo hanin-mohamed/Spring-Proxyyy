@@ -1,6 +1,6 @@
-package com.spring.proxylab.controller;
+package com.spring.proxylab.async.controller;
 
-import com.spring.proxylab.service.AsyncService;
+import com.spring.proxylab.async.service.AsyncService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.spring.proxylab.springaop.entity;
+package com.spring.proxylab.transactional.entity;
 
 import jakarta.persistence.*;
 

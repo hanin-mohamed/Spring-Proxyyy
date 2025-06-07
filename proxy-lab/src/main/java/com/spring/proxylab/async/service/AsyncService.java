@@ -1,9 +1,7 @@
-package com.spring.proxylab.service;
+package com.spring.proxylab.async.service;
 
 
-import com.spring.proxylab.springaop.entity.User;
-import com.spring.proxylab.springaop.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import com.spring.proxylab.transactional.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
