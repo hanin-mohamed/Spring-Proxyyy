@@ -322,21 +322,21 @@ For `@EventListener` and `@Async` to work:
     If you create the object manually using `new`, **no proxy is created**, and **it won’t work**.
 
 ---
-### 📍 Event Class [Event Class](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/feature-proxy-lab/src/main/java/com/spring/proxylab/event/model/MyCustomEvent.java)
+### 📍 Event Class [Event Class](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/event/model/CustomEvent.java)
 
 
 
-### 📍 Valid Listener (Spring-managed) [Valid Listener](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/feature-proxy-lab/src/main/java/com/spring/proxylab/event/listener/WorkingListener.java)
+### 📍 Valid Listener (Spring-managed) [Valid Listener](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/event/listener/CustomEventListener.java)
 
 > This works because Spring wraps the bean in a **proxy**, enabling both `@EventListener` and `@Async`.
 > Note: `@Async` makes the listener run on a separate thread (e.g., `pool-1-thread-1`).
 
 
 
-### 📍 Invalid Listener (Manual object – No Proxy) [Invalid Listener](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/feature-proxy-lab/src/main/java/com/spring/proxylab/event/listener/ManualListener.java)
+### 📍 Invalid Listener (Manual object – No Proxy) [Invalid Listener](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/event/listener/ManualListener.java)
 > Even if defined as a `@Bean`, it **won’t work** unless it's also proxied (e.g., via `@EnableAspectJAutoProxy`).
 
-### 📍 Event Publisher [Event Publisher](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/feature-proxy-lab/src/main/java/com/spring/proxylab/event/controller/EventTestController.java)
+### 📍 Event Publisher [Event Publisher](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/event/publisher/EventPublisher.java)
 
 
 ---
