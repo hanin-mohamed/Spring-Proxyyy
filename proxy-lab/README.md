@@ -453,3 +453,35 @@ To activate AOP in your project, you need:
 
 ---
 
+##  Proxy Performance Impact (Overhead & Drawbacks)
+
+In Spring, proxies act as intermediaries to enable features like `@Transactional`, `@Async`, and AOP. While this adds flexibility and modularity, it introduces a **performance cost** that developers should be aware of.
+
+---
+
+###  How Proxies Affect Performance
+
+
+|  Issue                     |  Explanation                                                                                                                                                                                                 |
+|-----------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Increased Execution Time**| Every method call on a proxied Bean goes through additional steps (e.g., executing Advice or checking transactions), causing a slight delay. This is more noticeable with multiple proxies (Proxy Chain).       |
+| **Memory Overhead**         | Proxies create additional objects (e.g., JDK Dynamic Proxy or CGLIB subclasses), consuming more memory, especially with many proxied Beans. CGLIB proxies, which create subclasses, use more memory than JDK proxies. |
+| **Initialization Overhead**| During application startup, Spring takes time to create proxies for all Beans requiring them. In large applications with hundreds or thousands of Beans, this can slow down startup time.                         |
+| **Self-Invocation Issues**  | Calling a method within the same class (`this.method()`) bypasses the proxy, which can lead to unexpected behavior (e.g., no transaction applied). This not only breaks functionality but also costs debugging time. |
+| **Lazy Loading in Hibernate**| Hibernate’s Lazy Proxy saves performance by deferring data loading, but accessing it after the Session closes causes a `LazyInitializationException`. This often forces developers to use `open-in-view=true`, which keeps the Session open longer and increases resource usage. |
+
+---
+
+>  While the performance cost of proxies is usually acceptable for most business applications, it's essential to monitor and optimize when building **high-performance**, **real-time**, or **resource-sensitive** systems.
+
+###  Reduce Proxy Performance Impact
+
+- **Use Interfaces:**  
+  Prefer JDK Dynamic Proxy (used with interfaces) over CGLIB, as it’s lighter on performance since it doesn’t create subclasses or modify bytecode extensively.  
+
+- **Minimize Advice Usage:**  
+  Avoid stacking multiple annotations (e.g., `@Transactional`, `@Async`, `@Cacheable`) on the same method, as each adds a proxy or Advice, increasing overhead.
+
+- **Avoid Self-Invocation:**  
+  To ensure proxies are applied, inject the Bean itself via Dependency Injection instead of calling methods with `this`.
+
