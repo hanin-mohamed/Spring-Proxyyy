@@ -90,20 +90,12 @@ public class MyService {
 - **How it works:** Proxy starts transaction before the method, and commits/rolls back afterward.
 - ⚠️ Works **only** when method is called **from outside** the class.
 
-📌 **Example:**
-```java
-@Service
-public class MyService {
-    @Transactional
-    public void saveData() {
-        // DB logic – auto rollback on error
-    }
-}
-```
+📌 **Service:** [Service Using **@Transactional** ](https://github.com/hanin-mohamed/Spring-Proxyyy/blob/main/src/main/java/com/spring/proxylab/transactional/service/UserService.java)
+
 
 ❌ Doesn’t work if:
 - Method is `private` or `final`
-- Called via `this.saveData()` inside same class
+- Called inside same class
 
 ---
 
@@ -112,16 +104,8 @@ public class MyService {
 - **What it does:** Runs method in a different thread to speed things up.
 - **How it works:** Proxy hands off method to thread pool executor.
 
-📌 **Example:**
-```java
-@Service
-public class MyService {
-    @Async
-    public void sendEmail() {
-        // Runs in a background thread
-    }
-}
-```
+📌 **Async Service:** [Async Service](https://github.com/hanin-mohamed/Spring-Proxyyy/blob/main/src/main/java/com/spring/proxylab/async/service/AsyncService.java)
+
 
 ❌ Doesn’t work if:
 - Method is called via `this.sendEmail()` inside same class
