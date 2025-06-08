@@ -353,3 +353,103 @@ For `@EventListener` and `@Async` to work:
 - The proxy handles both **event dispatching** and **thread management**.
 
 ---
+
+#  Spring AOP (Aspect-Oriented Programming)
+
+Spring AOP is a powerful tool in the Spring Framework that helps you handle **cross-cutting concerns**—like logging, security, or performance tracking—without cluttering your main business logic. Instead of repeating code in many places, AOP lets you write it once and apply it when needed.
+
+---
+
+##  Why Use AOP?
+
+- **Keep Code Clean:** Keeps extra responsibilities separate from the core logic.
+- **Promote Reusability:** Write once, reuse in multiple places (e.g., logging).
+- **Simplify Maintenance:** Update concerns like security or logging in one place.
+- **Add Flexibility:** Enable/disable behaviors without touching core business code.
+
+---
+
+##  Where to Use It?
+
+- **Service Layer:** Transaction management, business event logging  
+- **Controller Layer:** Security checks, request tracking  
+- **Repository/Data Layer:** Retry logic, performance monitoring  
+
+---
+
+##  When to Use It?
+
+- You need to apply the same action to multiple methods (e.g., logging, auth).
+- You need centralized security, performance, or transaction logic.
+- You want centralized error handling or logging.
+
+---
+
+##  Common Use Cases
+
+- **Logging:** Record when a method starts, ends, or fails.
+- **Security:** Restrict access to specific users/roles.
+- **Transactions:** Ensure database operations are consistent.
+- **Error Handling:** Log and handle exceptions globally.
+
+---
+
+##  How Does AOP Work?
+
+AOP weaves extra logic (**advice**) into your existing code at specific points (**join points**). Below are the core concepts:
+
+- **Aspect:** A class that contains cross-cutting logic.
+- **Advice:** Code that runs at a specific point (e.g., before a method).
+  - `@Before`, `@AfterReturning`, `@AfterThrowing`, `@After`, `@Around`
+- **Pointcut:** A rule for where the advice should apply.
+- **Join Point:** The actual execution point (e.g., method call).
+- **Target:** The object being advised (e.g., your service/controller).
+
+---
+
+###  AOP Process Flow
+
+```text
+        Client
+          │
+          ▼
+     [Proxy Object]  <-- Spring creates this
+          │
+   ┌──────┴────────────┐
+   │ Check Pointcut    │
+   │  ↳ Is it a match? │
+   └──────┬────────────┘
+          │ Yes
+          ▼
+     Apply Advice
+   (before, around, after...)
+          │
+          ▼
+     Call Real Method
+```
+
+---
+
+##  Why Proxies Are Important
+
+Spring AOP uses proxies to intercept method calls and apply aspects without modifying your original code.
+
+---
+
+##  Enabling Spring AOP
+
+To activate AOP in your project, you need:
+
+- Configuration to enable proxying
+- An `@Aspect` class
+- Target methods with matching pointcuts
+
+###  Example Classes
+
+-  [AOP Config](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/config/AopConfig.java)  
+-  [Aspect Class](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/aspect/AopAspect.java)  
+-  [AOP Service](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/service/AopService.java)  
+-  [AOP Controller](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/controller/AopController.java)
+
+---
+
