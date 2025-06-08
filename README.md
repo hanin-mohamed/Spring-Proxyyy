@@ -129,7 +129,7 @@ public class MyService {
 - Exception is thrown before returning `CompletableFuture`
 
 📌 **Using custom thread pool:**
-[custom thread pool](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/async/config/AsyncConfig.java)
+[custom thread pool](https://github.com/hanin-mohamed/Spring-Proxyyy/tree/main/src/main/java/com/spring/proxylab/async/config/AsyncConfig.java)
 
 
 ```java
@@ -322,21 +322,21 @@ For `@EventListener` and `@Async` to work:
     If you create the object manually using `new`, **no proxy is created**, and **it won’t work**.
 
 ---
-### 📍 Event Class [Event Class](https://github.com/hanin-mohamed/Spring-Proxyyy/event/model/CustomEvent.java)
+### 📍 Event Class [Event Class](https://github.com/hanin-mohamed/Spring-Proxyyy/tree/main/src/main/java/com/spring/proxylab/event/model/CustomEvent.java)
 
 
 
-### 📍 Valid Listener (Spring-managed) [Valid Listener](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/event/listener/CustomEventListener.java)
+### 📍 Valid Listener (Spring-managed) [Valid Listener](https://github.com/hanin-mohamed/Spring-Proxyyy/tree/main/src/main/java/com/spring/proxylab/event/listener/CustomEventListener.java)
 
 > This works because Spring wraps the bean in a **proxy**, enabling both `@EventListener` and `@Async`.
 > Note: `@Async` makes the listener run on a separate thread (e.g., `pool-1-thread-1`).
 
 
 
-### 📍 Invalid Listener (Manual object – No Proxy) [Invalid Listener](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/event/listener/ManualListener.java)
+### 📍 Invalid Listener (Manual object – No Proxy) [Invalid Listener](https://github.com/hanin-mohamed/Spring-Proxyyy/tree/main/src/main/java/com/spring/proxylab/event/listener/ManualListener.java)
 > Even if defined as a `@Bean`, it **won’t work** unless it's also proxied (e.g., via `@EnableAspectJAutoProxy`).
 
-### 📍 Event Publisher [Event Publisher](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/event/publisher/EventPublisher.java)
+### 📍 Event Publisher [Event Publisher](https://github.com/hanin-mohamed/Spring-Proxyyy/tree/main/src/main/java/com/spring/proxylab/event/publisher/EventPublisher.java)
 
 
 ---
@@ -446,10 +446,10 @@ To activate AOP in your project, you need:
 
 ###  Example Classes
 
--  [AOP Config](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/config/AopConfig.java)  
--  [Aspect Class](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/aspect/AopLoggingAspect.java)  
--  [AOP Service](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/service/AopService.java)  
--  [AOP Controller](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/controller/AopController.java)
+-  [AOP Config](https://github.com/hanin-mohamed/Spring-Proxyyy/tree/main/src/main/java/com/spring/proxylab/aop/config/AopConfig.java)  
+-  [Aspect Class](https://github.com/hanin-mohamed/Spring-Proxyyy/tree/main/src/main/java/com/spring/proxylab/aop/aspect/AopLoggingAspect.java)  
+-  [AOP Service](https://github.com/hanin-mohamed/Spring-Proxyyy/tree/main/src/main/java/com/spring/proxylab/aop/service/AopService.java)  
+-  [AOP Controller](https://github.com/hanin-mohamed/Spring-Proxyyy/tree/main/src/main/java/com/spring/proxylab/aop/controller/AopController.java)
 
 ---
 
