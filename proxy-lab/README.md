@@ -198,4 +198,115 @@ This allows the task to run in the background without blocking the Controller.
 
 ---
 
-Follow these practices to master proxy behavior and avoid common pitfalls☠️!
+#  Hibernate Lazy Proxy in Spring
+
+
+##  What is Lazy Loading?
+
+**Lazy Loading** means:
+
+> Hibernate will not load related data (e.g., collections or associations) until you access it.
+
+Instead of returning the real data (like a list of books), Hibernate returns a **proxy object** that delays loading until needed.
+
+📌 Example:
+```java
+@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+private List<Book> books;
+
+Author author = repo.findById(1L).orElseThrow();
+// No query for books yet
+
+author.getBooks(); // triggers SQL
+```
+
+---
+
+##  What Is a Hibernate Lazy Proxy?
+
+Hibernate creates a proxy class (like `PersistentBag`) that:
+
+-  Delays loading actual data  
+-  Holds reference to the Hibernate **Session**  
+-  Loads data when `.size()`, `.get()`, or `.iterator()` is called  
+
+---
+
+##  When Does It Work?
+
+| Situation                           | Works? | Reason                                 |
+|-------------------------------------|--------|----------------------------------------|
+| Inside `@Transactional`             | ✅     | Session is still open                  |
+| Inside controller (`open-in-view`)  | ✅     | Session kept open for request          |
+| After transaction ends              | ❌     | Session closed = proxy fails           |
+| After entity serialization          | ❌     | Session reference lost in JSON         |
+
+---
+
+##  Why Does It Fail?
+
+Hibernate proxies depend on an active `Session`. If closed:
+
+```java
+System.out.println(author.getBooks().size());
+```
+
+You get:
+
+```bash
+LazyInitializationException: could not initialize proxy – no Session
+```
+
+ Internally:
+```java
+if (this.session == null || !this.session.isOpen()) {
+    throw new LazyInitializationException("No Session");
+}
+```
+
+---
+
+##  Diagram – Hibernate Lazy Proxy Flow
+
+```mermaid
+sequenceDiagram
+    participant C as Controller
+    participant S as Service
+    participant H as Hibernate
+    participant DB as Database
+
+    C ->> S: loadAuthor(id)
+    S ->> H: findById(id)
+    H ->> DB: SELECT * FROM authors WHERE id=?
+    H -->> S: returns Author + Lazy Proxy (books)
+    S -->> C: returns Author
+
+    C ->> Author: getBooks().size()
+    alt Session is open
+        H ->> DB: SELECT * FROM books WHERE author_id=?
+        H -->> Author: returns books
+    else Session closed
+        H ->> Exception: LazyInitializationException
+    end
+```
+
+The sequence diagram shows how Lazy Loading works:
+
+The Controller asks the Service to load an Author by id.
+The Service uses Hibernate to fetch the Author from the Database, returning it with a Lazy Proxy for books.
+When getBooks().size() is called, if the Session is open, Hibernate fetches the books data; if closed, it throws a LazyInitializationException.
+
+---
+
+##  Common Fixes
+
+| Strategy              | Description                                          |
+|-----------------------|------------------------------------------------------|
+| `@Transactional`      |  Keeps the Hibernate Session open during the operation, allowing the Lazy Proxy to fetch data safely when needed.                    |
+| `join fetch`          | Fetches related data (e.g., books) along with the parent (e.g., Author) in a single database call, avoiding multiple queries                |
+| DTO projection        | Fetch only what you need: Creates a custom object with just the required fields, bypassing the Lazy Proxy and preventing session issues.                           |
+| `@EntityGraph`        | Control eager loading declaratively: Defines which relationships to load eagerly using annotations, giving fine-tuned control over data fetching.                  |
+| `open-in-view=true`   | (Caution) Keeps session open for web requests: Extends the Hibernate Session throughout the web request, but it may impact performance.       |
+| `fetch = EAGER`       | Always load with parent (not recommended for large collections): Forces Hibernate to load related data immediately with the parent, which can slow down the app if the data is big. |
+
+---
