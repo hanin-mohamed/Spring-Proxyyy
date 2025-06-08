@@ -447,7 +447,7 @@ To activate AOP in your project, you need:
 ###  Example Classes
 
 -  [AOP Config](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/config/AopConfig.java)  
--  [Aspect Class](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/aspect/AopAspect.java)  
+-  [Aspect Class](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/aspect/AopLoggingAspect.java)  
 -  [AOP Service](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/service/AopService.java)  
 -  [AOP Controller](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/aop/controller/AopController.java)
 
