@@ -129,20 +129,8 @@ public class MyService {
 - Exception is thrown before returning `CompletableFuture`
 
 📌 **Using custom thread pool:**
-```java
-@Configuration
-public class AsyncConfig {
-    @Bean(name = "customExecutor")
-    public Executor taskExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(25);
-        executor.initialize();
-        return executor;
-    }
-}
-```
+[custom thread pool](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/async/config/AsyncConfig.java)
+
 
 ```java
 @Service
@@ -266,7 +254,7 @@ if (this.session == null || !this.session.isOpen()) {
 
 ---
 
-##  Diagram – Hibernate Lazy Proxy Flow
+##  Hibernate Lazy Proxy 
 
 ```mermaid
 sequenceDiagram
@@ -308,5 +296,60 @@ When getBooks().size() is called, if the Session is open, Hibernate fetches the 
 | `@EntityGraph`        | Control eager loading declaratively: Defines which relationships to load eagerly using annotations, giving fine-tuned control over data fetching.                  |
 | `open-in-view=true`   | (Caution) Keeps session open for web requests: Extends the Hibernate Session throughout the web request, but it may impact performance.       |
 | `fetch = EAGER`       | Always load with parent (not recommended for large collections): Forces Hibernate to load related data immediately with the parent, which can slow down the app if the data is big. |
+
+---
+
+# Spring Events & Proxy Behavior
+
+> Spring provides a powerful **event-driven model** that allows components to communicate without being tightly coupled.  
+> But under the hood, it **relies on proxies** and **Spring-managed beans** to work properly.
+
+---
+
+## What Are Spring Events?
+
+- A **publisher** can fire an event using `ApplicationEventPublisher`.
+- Any **listener** annotated with `@EventListener` will handle the event.
+- Add `@Async` on listeners to process events **asynchronously** in a different thread.
+
+---
+
+##  Why Do Proxies Matter?
+
+For `@EventListener` and `@Async` to work:
+
+✅ The listener **must be a Spring-managed bean** (e.g., annotated with `@Component`, `@Service`, etc.).  
+    If you create the object manually using `new`, **no proxy is created**, and **it won’t work**.
+
+---
+### 📍 Event Class [Event Class](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/feature-proxy-lab/src/main/java/com/spring/proxylab/event/model/MyCustomEvent.java)
+
+
+
+### 📍 Valid Listener (Spring-managed) [Valid Listener](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/feature-proxy-lab/src/main/java/com/spring/proxylab/event/listener/WorkingListener.java)
+
+> This works because Spring wraps the bean in a **proxy**, enabling both `@EventListener` and `@Async`.
+> Note: `@Async` makes the listener run on a separate thread (e.g., `pool-1-thread-1`).
+
+
+
+### 📍 Invalid Listener (Manual object – No Proxy) [Invalid Listener](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/feature-proxy-lab/src/main/java/com/spring/proxylab/event/listener/ManualListener.java)
+> Even if defined as a `@Bean`, it **won’t work** unless it's also proxied (e.g., via `@EnableAspectJAutoProxy`).
+
+### 📍 Event Publisher [Event Publisher](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/feature-proxy-lab/src/main/java/com/spring/proxylab/event/controller/EventTestController.java)
+
+
+---
+
+##  Why Proxy Matters
+
+| Feature          | Needs Proxy | Works with `new`? | Works with `@Bean`?             |
+|------------------|-------------|-------------------|----------------------------------|
+| `@EventListener` | ✅ Yes      | ❌ No             | ❌ No (unless proxied manually)  |
+| `@Async`         | ✅ Yes      | ❌ No             | ❌ No (unless proxied manually)  |
+
+- `@EventListener` and `@Async` are implemented via **Spring AOP**.
+- Without a proxy, Spring **won’t detect or intercept** the method.
+- The proxy handles both **event dispatching** and **thread management**.
 
 ---
