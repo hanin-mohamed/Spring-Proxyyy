@@ -322,7 +322,7 @@ For `@EventListener` and `@Async` to work:
     If you create the object manually using `new`, **no proxy is created**, and **it won’t work**.
 
 ---
-### 📍 Event Class [Event Class](https://github.com/hanin-mohamed/Sprinkles-of-Spring/blob/main/proxy-lab/src/main/java/com/spring/proxylab/event/model/CustomEvent.java)
+### 📍 Event Class [Event Class](https://github.com/hanin-mohamed/Spring-Proxyyy/event/model/CustomEvent.java)
 
 
 
